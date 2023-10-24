@@ -1,0 +1,19 @@
+import { Radio } from "radio.slint";
+export component RadioGroup inherits Rectangle {
+    in property <[string]> model;
+    in-out property <int> current-index;
+    callback change(int);
+
+    HorizontalLayout {
+        spacing: 10px;
+        for item[index] in model:
+        Radio { 
+            text: item;
+            selected: current-index == index ? true : false;
+            OnSelected => {
+                current-index = index;
+                change(index)
+            }
+        }
+    }
+}

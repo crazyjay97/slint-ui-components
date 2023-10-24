@@ -1,0 +1,16 @@
+export component Button inherits Rectangle {
+    in-out property text <=> text.text;
+    callback clicked <=> ta.clicked;
+    in-out property <color> fontColor: #000;
+    min-width: 80px; 
+    background: ta.pressed ? #f9f9f9 : #FFF;
+    border-radius: 10px;
+    text := Text {
+        font-weight: 600;
+        color: ta.pressed ? #C6C6C6 : fontColor;
+    }
+
+    ta := TouchArea {
+        mouse-cursor: pointer;
+    }    
+}

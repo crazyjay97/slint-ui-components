@@ -1,0 +1,35 @@
+import {Images} from "../images.slint";
+
+export component IconButton inherits Rectangle {
+    in-out property text <=> txt.text;
+    in property <bool> selected : false;
+    in property <image> iconSelected;
+    in property <image> icon;
+
+    height: 80px;
+    border-width: 1px;
+    background: selected ? @linear-gradient(135deg, rgba(45,84,220,1) 0%, rgba(30,59,152,1) 100%) :#FFFFFF;
+    border-color: touch.pressed ? #eee9e9 : #C6C6C6 ;
+    border-radius: 10px;
+    VerticalLayout {
+        alignment: space-around;
+        HorizontalLayout {
+            alignment: center;
+            img := Image {
+                source: selected ? iconSelected : icon;
+                width: 40px;
+                height: 40px;
+            }
+        }
+        txt := Text { 
+            horizontal-alignment: center;
+            font-weight: 800;
+            color: selected ? #FFFFFF :touch.pressed ? #C6C6C6:#000;
+        }
+    }
+    touch := TouchArea{
+        mouse-cursor: pointer;
+    }
+    callback clicked <=> touch.clicked;
+    
+}

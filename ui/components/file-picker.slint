@@ -1,0 +1,51 @@
+import {Images} from "../images.slint";
+import { Logic  } from "../global.slint";
+
+export component FilePicker inherits Rectangle {
+    in-out property text <=> text.text;
+    callback change(string);
+    border-width: 1px;
+    border-color: #E6E6E6;
+    border-radius: 3px;
+    background: ta.pressed ? #f9f9f9 : #FFF;
+    layout := HorizontalLayout {
+        alignment: center;
+        spacing: 5px;
+        filePathText := Text {
+            width: 0;
+            vertical-alignment: center;
+            color: ta.pressed ? #C6C6C6 : #000;
+            animate width {
+                duration: 300ms;
+                easing: ease-out;
+           }
+        }
+        Text {
+            text: "";
+        }
+        VerticalLayout {
+            alignment: center;
+            Image {
+                height: 26px;
+                width: 26px;
+                source: ta.pressed ? Images.file_gray : Images.file;
+            }
+        }
+        text := Text {
+            width: self.min-width;
+            vertical-alignment: center;
+            color: ta.pressed ? #C6C6C6 : #000;
+        }
+    }
+    ta := TouchArea {
+        mouse-cursor: pointer;
+        clicked => {
+            filePathText.text = Logic.firmwarePick();
+            if ( filePathText.text != "" ){
+                filePathText.width = parent.width - 70px;
+                text.width = 0px;
+                change(filePathText.text)
+            }
+        }
+    }
+}

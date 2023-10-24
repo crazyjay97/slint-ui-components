@@ -1,0 +1,14 @@
+[package]
+name = "slint-ui-components"
+version = "0.1.0"
+edition = "2021"
+authors = ["weijie_zhan@hotmail.com"]
+
+
+[dependencies]
+slint = "1.2.2"
+
+[build-dependencies]
+slint-build = "1.2.2"
+winres = "0.1"
+

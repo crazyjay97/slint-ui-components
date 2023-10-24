@@ -1,0 +1,85 @@
+import { Images } from "../images.slint";
+import { StandardListView, ScrollView , HorizontalBox} from "std-widgets.slint";
+import { Radio } from "radio.slint";
+export component SearchSelect inherits Rectangle {
+    border-width: 1px;
+    border-color: #E6E6E6;
+    border-radius: 3px;
+    callback search(string);
+    background: ta.pressed ? #f9f9f9 : #FFF;
+    in-out property <[StandardListViewItem]> options;
+    in-out property <string> keyword;
+    in-out property <string> placeholder;
+    property <bool> show: false;
+    property <[StandardListViewItem]>  innerOptions;
+    callback change(string);
+
+    ta := TouchArea{
+        width: parent.width - 80px;
+    }
+
+    HorizontalLayout {
+        padding: 10px;
+        Rectangle {
+            height: 20px;
+            if placeholder != "" && keyword == "":
+                hd := Text{
+                    y: -4px;
+                    height: 25px;
+                    vertical-alignment: center;
+                    width: parent.width;
+                    horizontal-alignment: left;
+                    color: #c4c4c4;
+                    text: root.placeholder;
+                }
+            tx := TextInput {
+                single-line: true;
+                vertical-alignment: center;
+                text: keyword;
+                accepted()=>{
+                    root.show = true;
+                    search(keyword);
+                }
+                edited()=>{
+                    root.keyword = self.text;
+                    change(self.text);
+                }
+            }
+        }
+        Image {
+            width: 25px;
+            source: Images.search;
+
+            st := TouchArea {
+                mouse-cursor: pointer;
+                clicked => {
+                    root.show = true;
+                    search(keyword);
+                }
+            }
+        }
+    }
+    if show && options.length > 0:
+        Rectangle{
+            z: 100;
+            y: 39px;
+            width: parent.width - 0px;
+            height: 100px;
+            border-color: #E6E6E6;
+            border-width: 1px;
+            background: #FFF;
+            opacity: 1;
+            StandardListView {
+                opacity: 1;
+                width: parent.width - 40px;
+                height: 100px;
+                model: options;
+                current-item-changed(idx) => {
+                    root.keyword = options[idx].text;
+                    root.show = false;
+                    change(root.keyword);
+                    tx.text = root.keyword;
+                }
+            }
+        }
+}

@@ -1,0 +1,78 @@
+import { Images } from "../images.slint";
+import { StandardListView, ScrollView , HorizontalBox} from "std-widgets.slint";
+import { Radio } from "radio.slint";
+export component Input inherits Rectangle {
+    border-width: 1px;
+    border-color: #E6E6E6;
+    border-radius: 3px;
+    callback search(string);
+    background: ta.pressed ? #f9f9f9 : #FFF;
+    in-out property <[StandardListViewItem]> options;
+    in-out property <string> keyword;
+    in-out property <string> prefixText;
+    in-out property <string> placeholder;
+    in-out property <InputType> inputType <=> tx.input-type;
+    property <bool> show: false;
+    property <[StandardListViewItem]>  innerOptions;
+    callback change(string);
+
+    ta := TouchArea{
+        width: parent.width - 80px;
+        clicked => {
+            tx.focus()
+        }
+    }
+
+    VerticalLayout {
+        alignment: center;
+        Rectangle {
+            height: 30px;
+            clip: true;
+            HorizontalLayout {
+                spacing: 5px;
+                if prefixText != "":
+                    prefix := Text   {
+                        vertical-alignment: center;
+                        color: #c4c4c4;
+                        text: prefixText;
+                    }
+                Rectangle {
+                    VerticalLayout {
+                        alignment: center;
+                        HorizontalLayout {
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        if !tx.has-focus && placeholder != "" && keyword == "":
+                                hd := Text{
+                                    height: 25px;
+                                    vertical-alignment: center;
+                                    horizontal-alignment: left;
+                                    color: #c4c4c4;
+                                    text: root.placeholder;
+                                }
+                                ScrollView {
+                                        width: root.width - 10px;
+                                        height: 40px;
+                                        viewport-width: root.width - 10px;
+                                        viewport-height: 23px;
+                                        HorizontalLayout {
+                                            tx := TextInput {
+                                                width: self.max-width;
+                                                single-line: true;
+                                                vertical-alignment: center;
+                                                text: keyword;
+                                                font-size: 16px;
+                                                edited()=>{
+                                                    root.keyword = self.text;
+                                                    change(self.text);
+                                                }
+                                            }
+                                        }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

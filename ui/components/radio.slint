@@ -1,0 +1,34 @@
+export component Radio inherits Rectangle {
+    in-out property <bool> selected;
+    in property <string> text;
+    callback OnSelected();
+    
+    TouchArea {
+        mouse-cursor: pointer;
+        clicked => {
+            OnSelected();
+        }
+    }
+
+    HorizontalLayout {
+        spacing: 10px;
+        VerticalLayout {
+            alignment: center;
+            Rectangle {
+                width: 20px;
+                height: 20px;
+                background: selected ? rgba(45,84,220,1) : #FFF;
+                border-color: #000000;
+                border-radius: 10px;
+                border-width: 3px;
+            }
+        }
+        VerticalLayout {
+            alignment: center;
+            Text {
+                text: text;
+                vertical-alignment: center;
+            }
+        }
+    }
+}
