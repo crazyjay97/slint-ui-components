@@ -6,6 +6,7 @@ authors = ["weijie_zhan@hotmail.com"]
 
 
 [dependencies]
+native-dialog = "0.6.4"
 slint = "1.2.2"
 
 [build-dependencies]

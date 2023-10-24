@@ -1,6 +1,5 @@
 import { Images } from "../images.slint";
 import { StandardListView, ScrollView , HorizontalBox} from "std-widgets.slint";
-import { Radio } from "radio.slint";
 
 export enum Postion{
     Top,
@@ -14,7 +13,7 @@ export component Select inherits Rectangle {
     callback search(string);
     background: ta.pressed ? #f9f9f9 : #FFF;
     in-out property <[StandardListViewItem]> options;
-    in property <string> keyword <=> tx.text;
+    in property <string> value <=> tx.text;
     in-out property <string> placeholder;
     property <bool> show: false;
     callback change(string);
@@ -33,7 +32,7 @@ export component Select inherits Rectangle {
         Rectangle {
             HorizontalLayout {
                 height: 20px;
-                if placeholder != "" && keyword == "":
+                if placeholder != "" && value == "":
                     hd := Text{
                         y: -4px;
                         height: 25px;

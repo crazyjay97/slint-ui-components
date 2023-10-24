@@ -1,9 +1,9 @@
 import {Images} from "../images.slint";
 
 export component IconButton inherits Rectangle {
-    in-out property text <=> txt.text;
+    in-out  property text <=> txt.text;
     in property <bool> selected : false;
-    in property <image> iconSelected;
+    in property <image> icon_pressed;
     in property <image> icon;
 
     height: 80px;
@@ -16,7 +16,7 @@ export component IconButton inherits Rectangle {
         HorizontalLayout {
             alignment: center;
             img := Image {
-                source: selected ? iconSelected : icon;
+                source: touch.pressed ? icon_pressed : selected ? icon_pressed : icon;
                 width: 40px;
                 height: 40px;
             }

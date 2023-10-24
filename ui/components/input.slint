@@ -31,10 +31,14 @@ export component Input inherits Rectangle {
             HorizontalLayout {
                 spacing: 5px;
                 if prefixText != "":
-                    prefix := Text   {
-                        vertical-alignment: center;
-                        color: #c4c4c4;
-                        text: prefixText;
+                    HorizontalLayout{
+                        padding-left: 10px;
+                        prefix := Text   {
+                            padding-left: 20px;
+                            vertical-alignment: center;
+                            color: #c4c4c4;
+                            text: prefixText;
+                        }
                     }
                 Rectangle {
                     VerticalLayout {
@@ -51,12 +55,13 @@ export component Input inherits Rectangle {
                                     text: root.placeholder;
                                 }
                                 ScrollView {
-                                        width: root.width - 10px;
+                                        width: root.width - 40px;
                                         height: 40px;
-                                        viewport-width: root.width - 10px;
+                                        viewport-width: root.width - (prefixText == ""? 10px: 30px);
                                         viewport-height: 23px;
                                         HorizontalLayout {
                                             tx := TextInput {
+                                                y: 2px;
                                                 width: self.max-width;
                                                 single-line: true;
                                                 vertical-alignment: center;

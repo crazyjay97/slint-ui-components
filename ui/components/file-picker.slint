@@ -1,8 +1,8 @@
-import {Images} from "../images.slint";
-import { Logic  } from "../global.slint";
+import { Images } from "../images.slint";
+import { Logic } from "../global.slint";
 
 export component FilePicker inherits Rectangle {
-    in-out property text <=> text.text;
+    in-out property placeholder <=> holder.text;
     callback change(string);
     border-width: 1px;
     border-color: #E6E6E6;
@@ -31,7 +31,7 @@ export component FilePicker inherits Rectangle {
                 source: ta.pressed ? Images.file_gray : Images.file;
             }
         }
-        text := Text {
+        holder := Text {
             width: self.min-width;
             vertical-alignment: center;
             color: ta.pressed ? #C6C6C6 : #000;
@@ -40,11 +40,15 @@ export component FilePicker inherits Rectangle {
     ta := TouchArea {
         mouse-cursor: pointer;
         clicked => {
-            filePathText.text = Logic.firmwarePick();
+            filePathText.text = Logic.file_pick();
             if ( filePathText.text != "" ){
                 filePathText.width = parent.width - 70px;
-                text.width = 0px;
+                holder.width = 0px;
                 change(filePathText.text)
+            }else {
+                filePathText.width = 0;
+                holder.width = holder.min-width;
+                change("")
             }
         }
     }

@@ -1,128 +1,84 @@
-import { LineEdit , HorizontalBox, Button} from "std-widgets.slint";
-import { OfflinePanel } from "offline.slint";
-import { Images } from "images.slint";
+
+import { Logic } from "./global.slint";
+import { FilePicker } from "components/file-picker.slint";
+import { RadioGroup } from "components/radio-group.slint";
+import { Input } from "components/input.slint";
+import { Select } from "components/select.slint";
+import { Button } from "components/button.slint";
 import { IconButton } from "components/icon-button.slint";
-import { Logic } from "global.slint";
-import { LoginPanel } from "login.slint";
-import { OnlinePanel } from "online.slint";
-export { Logic,Images }
+import  {Images } from "./images.slint";
+
+
+
+export { Logic }
 export component MainWindow inherits Window {
-    title: "Lierda-link";
-    min-height: 370px;
-    min-width: 600px;
-    max-height: 370px;
-    max-width: 600px;
-    no-frame: true;
-    background: transparent;
-    private property <int> panelSelect: 2;
-    property <{x:length,y:length}> mouseDownPositon;
+    title: "Components for Slint-UI";
+    property <string> select_value: "";
+    height: 600px;
+    width: 800px;
 
     VerticalLayout {
-        z: 80;
         alignment: start;
-        Rectangle {
-            touch := TouchArea {
-                height: 40px;
-                mouse-cursor: move;
-                moved => {
-                    Logic.moveWindow(touch.mouse-x - mouseDownPositon.x, touch.mouse-y - mouseDownPositon.y);
-                }
-                pointer-event(event)=>{
-                    if (event.kind == PointerEventKind.down){
-                        mouseDownPositon = {
-                            x: touch.mouse-x,
-                            y: touch.mouse-y
-                        }
-                    }
-                }
-            }
-            HorizontalBox {
-                alignment: end;
-                height: 20px;
-                padding-right: 20px;
-                Rectangle {
-                    width: 20px;
-                    height: 20px;
-                    Image {
-                        height: closeTouch.has-hover? 24px : 20px;
-                        width: closeTouch.has-hover? 24px : 20px;
-                        source: Images.close;
-                        animate width, height {
-                            duration: 300ms;
-                            easing: ease;
-                        }
-                    }
-                    closeTouch := TouchArea {
-                        mouse-cursor: pointer;
-                        clicked => {
-                            Logic.close();
-                        }
-                    }
-                }
-            }
+        spacing: 10px;
+        padding: 20px;
+        FilePicker { 
+            width: 300px;
+            height: 40px;
+            placeholder: "Choose file";
+        }    
 
-        }   
-    }
-    
-    Rectangle {
-        background: #dddddd;
-        border-radius: 10px;
-        border-width: 1px;
-        border-color: #b5b5b5;
-        clip: true;
-        VerticalLayout {
-            HorizontalLayout {
-                padding: 0; 
-                spacing: 10px; 
-                Rectangle {
-                    width:80px;
-                    height: 100%;
-                    background: #FFFFFF;
-                    VerticalLayout {
-                        alignment: space-around;
-                        width: 60px;
-                        spacing: 10px;
-                        IconButton { 
-                            selected: panelSelect == 0;
-                            icon: Images.offline_fill;
-                            iconSelected: Images.offline;
-                            text: "离线";
-                            clicked() => {
-                                panelSelect = 0
-                            }
-                        }
-                        IconButton { 
-                            selected: panelSelect == 1;
-                            icon: Images.online_fill;
-                            iconSelected: Images.online; 
-                            text: "在线";
-                            clicked() => {
-                                panelSelect = 1
-                            }
-                        }
-                        IconButton { 
-                            selected: panelSelect == 2;
-                            icon: Images.mine_fill;
-                            iconSelected: Images.mine;
-                            text: "登录";
-                            clicked() => {
-                                panelSelect = 2
-                            }
-                        }
-                    }
-                }
-                VerticalLayout {
-                    if panelSelect == 0: OfflinePanel {
-                    
-                    } if  panelSelect == 1: OnlinePanel {
-                        
-                    } if  panelSelect == 2: LoginPanel {
-                        
-                    } 
-                }
+        RadioGroup { 
+            model: ["u32","u64", "i32", "i64"];
+        }
+
+        Input { 
+            height: 40px;
+            width: 300px;
+            prefixText: "￥";
+        }
+
+        Select {
+            z: 10;
+            width: 300px;
+            height: 40px;
+            value: select_value;
+            placeholder: "Single select";
+            options: [
+                {text:"u32"},
+                {text:"u64"},
+                {text:"i32"},
+                {text:"i64"}
+            ];
+            change(val) => {
+                select-value = val
             }
         }
 
-    
+        Button { 
+            z: 1;
+            height: 40px;
+            width: 100px;
+            text: "Submit";
+        }
+
+        HorizontalLayout {
+            spacing: 10px;
+            IconButton { 
+                width: 140px;
+                height: 100px;
+                icon: Images.online-fill;
+                icon-pressed: Images.online;
+                text: "Communicate";
+            }
+
+            IconButton { 
+                width: 140px;
+                height: 100px;
+                selected: true;
+                icon: Images.mine-fill;
+                icon-pressed: Images.mine;
+                text: "Mine";
+            }
+        }
     }
 }
